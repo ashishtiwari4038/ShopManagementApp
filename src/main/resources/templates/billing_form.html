@@ -1,0 +1,244 @@
+<!--<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee Billing</title>
+    <style>
+        .form-container { width: 500px; margin: auto; border: 1px solid #ccc; padding: 20px; }
+        .row { margin-bottom: 10px; }
+        label { display: inline-block; width: 150px; }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>New Sale / Generate Invoice</h2>
+        <form id="billingForm" th:action="@{/employee/save-invoice}" th:object="${sale}" method="post">
+            <div class="row"><label>Customer Name:</label> <input type="text" th:field="*{customerName}" required></div>
+            <div class="row"><label>Phone Number:</label> <input type="text" th:field="*{customerNumber}"></div>
+            <div class="row"><label>Product Company:</label> <input type="text" th:field="*{productCompany}"></div>
+            <div class="row"><label>Model:</label> <input type="text" th:field="*{model}"></div>
+            <div class="row"><label>MRP:</label> <input type="number" id="mrp" th:field="*{mrp}" step="0.01"></div>
+            <div class="row"><label>Discount (%):</label> <input type="number" id="disc" th:field="*{discount}" step="0.1"></div>
+            <div class="row"><label>GST (%):</label> <input type="number" id="gst" th:field="*{gst}" step="0.1"></div>
+            
+            <div class="row">
+                <label><strong>Total Payable:</strong></label> 
+                <span id="displayTotal">0.00</span>
+            </div>
+
+            <button type="button" onclick="calculate()">Calculate</button>
+            <button type="submit">Save & Generate Invoice</button>
+            <button type="button" onclick="document.getElementById('billingForm').reset()">Clear</button>
+            <a href="/">Logout</a>
+        </form>
+    </div>
+
+    <script>
+        function calculate() {
+            let mrp = parseFloat(document.getElementById('mrp').value) || 0;
+            let disc = parseFloat(document.getElementById('disc').value) || 0;
+            let gst = parseFloat(document.getElementById('gst').value) || 0;
+            
+            let afterDisc = mrp - (mrp * (disc / 100));
+            let total = afterDisc + (afterDisc * (gst / 100));
+            document.getElementById('displayTotal').innerText = total.toFixed(2);
+        }
+    </script>
+</body>
+</html>  newdashboard-->
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee Billing</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --bg-color: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            background: white;
+            width: 100%;
+            max-width: 550px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: #1e293b;
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .row {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #475569;
+            font-size: 0.9rem;
+        }
+
+        input {
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .total-section {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .total-label {
+            font-size: 1.1rem;
+            color: #64748b;
+            display: block;
+        }
+
+        #displayTotal {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button[type="button"] { background-color: var(--secondary-color); color: white; }
+        button[type="submit"] { background-color: var(--primary-color); color: white; grid-column: span 2; }
+        .clear-btn { background-color: #e2e8f0 !important; color: #475569 !important; }
+
+        button:hover { opacity: 0.9; }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .logout-link {
+            color: var(--danger-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>New Sale / Generate Invoice</h2>
+        
+        <form id="billingForm" th:action="@{/employee/save-invoice}" th:object="${sale}" method="post">
+            <div class="row">
+                <label>Customer Name</label>
+                <input type="text" th:field="*{customerName}" placeholder="e.g. John Doe" required>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="row">
+                    <label>Phone Number</label>
+                    <input type="text" th:field="*{customerNumber}" placeholder="1234567890">
+                </div>
+                <div class="row">
+                    <label>Product Company</label>
+                    <input type="text" th:field="*{productCompany}" placeholder="e.g. Samsung">
+                </div>
+            </div>
+
+            <div class="row">
+                <label>Model</label>
+                <input type="text" th:field="*{model}" placeholder="e.g. Galaxy S21">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                <div class="row">
+                    <label>MRP</label>
+                    <input type="number" id="mrp" th:field="*{mrp}" step="0.01" oninput="calculate()">
+                </div>
+                <div class="row">
+                    <label>Discount (%)</label>
+                    <input type="number" id="disc" th:field="*{discount}" step="0.1" oninput="calculate()">
+                </div>
+                <div class="row">
+                    <label>GST (%)</label>
+                    <input type="number" id="gst" th:field="*{gst}" step="0.1" oninput="calculate()">
+                </div>
+            </div>
+            
+            <div class="total-section">
+                <span class="total-label">Total Payable Amount</span>
+                <span id="displayTotal">0.00</span>
+            </div>
+
+            <div class="button-group">
+                <button type="submit">Save & Generate Invoice</button>
+                <button type="button" class="clear-btn" onclick="document.getElementById('billingForm').reset(); calculate();">Clear Form</button>
+                <button type="button" onclick="calculate()">Refresh Calculation</button>
+            </div>
+
+            <div class="footer-links">
+                <a href="/" class="logout-link">Logout from System</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function calculate() {
+            let mrp = parseFloat(document.getElementById('mrp').value) || 0;
+            let disc = parseFloat(document.getElementById('disc').value) || 0;
+            let gst = parseFloat(document.getElementById('gst').value) || 0;
+            
+            let afterDisc = mrp - (mrp * (disc / 100));
+            let total = afterDisc + (afterDisc * (gst / 100));
+            document.getElementById('displayTotal').innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+    </script>
+</body>
+</html>

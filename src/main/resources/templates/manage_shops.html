@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Shops</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .form-section { background: #eee; padding: 20px; border-radius: 5px; }
+        .btn-delete { color: red; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Owner Dashboard - Manage Shops</h1>
+    <a th:href="@{/owner/dashboard}">Back to Dashboard</a>
+    <hr>
+
+    <div class="form-section">
+        <h3>Add New Shop</h3>
+        <form th:action="@{/owner/add-shop}" th:object="${newShop}" method="post">
+            <input type="text" th:field="*{shopCustomId}" placeholder="Shop ID" required>
+            <input type="text" th:field="*{shopUsername}" placeholder="Username" required>
+            <input type="password" th:field="*{password}" placeholder="Password" required>
+            <input type="text" th:field="*{city}" placeholder="City">
+            <input type="text" th:field="*{address}" placeholder="Address">
+            <input type="text" th:field="*{phoneNumber}" placeholder="Phone Number">
+            <button type="submit">Add Shop</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Shop ID</th>
+                <th>Username</th>
+                <th>City</th>
+                <th>Address</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="shop : ${shops}">
+                <td th:text="${shop.shopCustomId}"></td>
+                <td th:text="${shop.shopUsername}"></td>
+                <td th:text="${shop.city}"></td>
+                <td th:text="${shop.address}"></td>
+                <td><a th:href="@{'/owner/delete-shop/' + ${shop.id}}" class="btn-delete">Delete</a></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
