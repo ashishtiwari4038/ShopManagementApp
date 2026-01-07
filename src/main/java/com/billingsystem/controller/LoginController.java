@@ -19,7 +19,7 @@ public class LoginController {
     
     @GetMapping("/")
     public String showLoginPage(Model model, @RequestParam(required = false) String error) {
-        // If the URL has ?error=SessionExpired, show a friendly message
+       
         if ("SessionExpired".equals(error)) {
             model.addAttribute("errorMessage", "Session expired. Please log in again.");
         }
@@ -65,7 +65,7 @@ public class LoginController {
    
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); // Clears all session data
+        session.invalidate(); 
         return "redirect:/";
     }
 }
